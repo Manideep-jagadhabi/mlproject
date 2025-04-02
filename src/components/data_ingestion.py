@@ -4,9 +4,11 @@ from src.exception import CustomException
 from src.logger import logging
 import pandas as pd  # need to deal with Data Frames
 
-
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
+
+from src.components.data_transformation import DataTransformation
+from src.components.data_transformation import DataTransformationConfig
 
 @dataclass
 class DataIngestionConfig:  #to give input
@@ -49,4 +51,10 @@ class DataIngestion:
         
 if __name__=="__main__":    # This ensures that DataIngestion() and initiate_data_ingestion() run only when the script is executed directly, not when imported into another script.
     obj=DataIngestion()
-    obj.initiate_data_ingestion()
+    train_data,test_data=obj.initiate_data_ingestion() 
+  # combined data ingestion
+
+  #combined data transformation
+    data_transformation=DataTransformation()
+    data_transformation.initiate_data_transformation(train_data,test_data)
+
