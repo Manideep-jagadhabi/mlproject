@@ -10,11 +10,14 @@ from dataclasses import dataclass
 from src.components.data_transformation import DataTransformation
 from src.components.data_transformation import DataTransformationConfig
 
+from src.components.model_trainer import ModelTrainerConfig
+from src.components.model_trainer import ModelTrainer
+
 @dataclass
 class DataIngestionConfig:  #to give input
-    train_data_path: str=os.path.join('artifacts',"trian.csv")  #giving path and all outputs saves inside artiacts folder and file name is train.csv
+    train_data_path: str=os.path.join('artifacts',"train.csv")  #giving path and all outputs saves inside artiacts folder and file name is train.csv
     test_data_path: str=os.path.join('artifacts',"test.csv")  # this 3 lines are the inputs we are giving in Data ingestion component
-    raw_data_path: str=os.path.join('artifacts',"raw.csv")
+    raw_data_path: str=os.path.join('artifacts',"data.csv")
 
 class DataIngestion:
     def __init__(self):
@@ -42,7 +45,7 @@ class DataIngestion:
 
             return(
                 self.ingestion_config.train_data_path,   #returning train and test data for transformation
-                self.ingestion_config.train_data_path
+                self.ingestion_config.test_data_path
 
             )
 
@@ -56,5 +59,10 @@ if __name__=="__main__":    # This ensures that DataIngestion() and initiate_dat
 
   #combined data transformation
     data_transformation=DataTransformation()
-    data_transformation.initiate_data_transformation(train_data,test_data)
+    train_arr,test_arr,_= data_transformation.initiate_data_transformation(train_data,test_data)
+
+    modeltrainer=ModelTrainer()
+    print(modeltrainer.initiate_model_trainer(train_arr,test_arr))  
+
+
 
