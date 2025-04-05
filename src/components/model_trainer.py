@@ -19,6 +19,9 @@ from src.exception import CustomException
 from src.logger import logging
 
 from src.utils import save_object,evaluate_models
+            
+              #model learns the train and test data 
+
 
 @dataclass
 class ModelTrainerConfig:
@@ -32,10 +35,10 @@ class ModelTrainer:
     def initiate_model_trainer(self,train_array,test_array):
         try:
             logging.info("Split training and test input data")
-            X_train,y_train,X_test,y_test=(
-                train_array[:,:-1],
-                train_array[:,-1],
-                test_array[:,:-1],
+            X_train,y_train,X_test,y_test=( # we are spliting to train model
+                train_array[:,:-1],  # everthing except last column
+                train_array[:,-1],   # only last coulumn
+                test_array[:,:-1],   # same thing goes for test
                 test_array[:,-1]
             )
             models = {
@@ -93,7 +96,7 @@ class ModelTrainer:
 
             ## To get best model name from dict
 
-            best_model_name = list(model_report.keys())[
+            best_model_name = list(model_report.keys())[  #here key is the model name
                 list(model_report.values()).index(best_model_score)
             ]
             best_model = models[best_model_name]
@@ -103,7 +106,7 @@ class ModelTrainer:
             logging.info(f"Best found model on both training and testing dataset")
 
             save_object(
-                file_path=self.model_trainer_config.trained_model_file_path,
+                file_path=self.model_trainer_config.trained_model_file_path,  #TO SAVE IN THE FORM OF pkl FILE THAT IS (MODEL.PKL lINE 28)
                 obj=best_model
             )
 
